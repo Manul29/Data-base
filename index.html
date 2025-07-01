@@ -12,7 +12,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #ffffff;
@@ -23,7 +23,7 @@
             padding: 20px;
             transition: background 1s ease;
         }
-        
+
         .card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
@@ -35,11 +35,11 @@
             text-align: center;
             margin-top: 30px;
         }
-        
+
         .hidden {
             display: none;
         }
-        
+
         .option {
             padding: 12px 20px;
             margin: 10px 5px;
@@ -52,36 +52,36 @@
             border: 2px solid #aaa;
             transition: 0.3s;
         }
-        
+
         .option.correct {
             background-color: #4caf50 !important;
             color: white;
         }
-        
+
         .option.wrong {
             background-color: #f44336 !important;
             color: white;
         }
-        
+
         .question {
             font-size: 20px;
             margin-bottom: 20px;
             font-weight: bold;
         }
-        
+
         .confess-text {
             margin-top: 20px;
             font-size: 18px;
             animation: fadeIn 1s ease forwards;
             opacity: 0;
         }
-        
+
         @keyframes fadeIn {
             to {
                 opacity: 1;
             }
         }
-        
+
         #skorAkhir {
             font-size: 18px;
             margin-top: 15px;
@@ -149,7 +149,7 @@
             tanya: "2 + 2 = ?",
             pilihan: ["3", "4", "5", "2"],
             benar: 1
-        }, ];
+        }];
 
         function mulaiWarna() {
             namaUser = document.getElementById("nama").value;
@@ -174,8 +174,8 @@
             const audio = document.getElementById("bgm");
             audio.src = file;
             audio.play().catch(err => {
-                console.log("Autoplay di cegah, iser harus interaksi dulu")
-            })
+                console.log("Autoplay dicegah, user harus interaksi dulu");
+            });
             document.getElementById("musik").classList.add("hidden");
             document.getElementById("kuis").classList.remove("hidden");
             tampilkanSoal();
@@ -216,7 +216,7 @@
                 } else {
                     document.getElementById("kuis").classList.add("hidden");
                     document.getElementById("hasil").classList.remove("hidden");
-                    document.getElementById("skorAkhir").textContent = `${namaUser}, kamu benar ${skor} dari ${soal.length} soal.`;
+                    document.getElementById("skorAkhir").textContent = `waww🤯, kamu benar ${skor} dari ${soal.length} soal.`;
                 }
             }, 1000);
         }
@@ -230,6 +230,16 @@
             setTimeout(() => document.getElementById("line3").classList.remove("hidden"), 4500);
             setTimeout(() => document.getElementById("line4").classList.remove("hidden"), 6500);
         }
+
+        // === Matikan musik saat keluar tab/browser ===
+        document.addEventListener("visibilitychange", function () {
+            const audio = document.getElementById("bgm");
+            if (document.visibilityState === "hidden") {
+                audio.pause();
+            } else {
+                audio.play().catch(() => {});
+            }
+        });
     </script>
 </body>
 
