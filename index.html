@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuis Confess Full Alur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: background 1s ease;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .option {
+            padding: 12px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background: white;
+            color: #333;
+            border: 2px solid #aaa;
+            transition: 0.3s;
+        }
+        
+        .option.correct {
+            background-color: #4caf50 !important;
+            color: white;
+        }
+        
+        .option.wrong {
+            background-color: #f44336 !important;
+            color: white;
+        }
+        
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .confess-text {
+            margin-top: 20px;
+            font-size: 18px;
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        #skorAkhir {
+            font-size: 18px;
+            margin-top: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" id="login">
+        <h2>Masukkan Nama Kamu</h2>
+        <input type="text" id="nama" placeholder="Namamu..." />
+        <br><br>
+        <button class="option" onclick="mulaiWarna()">Lanjut</button>
+    </div>
+
+    <div class="card hidden" id="warna">
+        <h2>Pilih tema warna favoritmu</h2>
+        <button class="option" onclick="pilihWarna('pink')">Pink</button>
+        <button class="option" onclick="pilihWarna('blue')">Biru</button>
+        <button class="option" onclick="pilihWarna('grey')">Abu-abu</button>
+        <button class="option" onclick="pilihWarna('yellow')">Kuning</button>
+    </div>
+
+    <div class="card hidden" id="musik">
+        <h2>Pilih musik latar</h2>
+        <h5>sorry audione jelek😭</h5>
+        <button class="option" onclick="pilihMusik('https://docs.google.com/uc?export=download&id=1_kyTzeNDczwFGCHky355DSgXg0jEA9zM')">To The Bone</button>
+        <button class="option" onclick="pilihMusik('lagu2.mp3')">Terlalu Lama</button>
+        <button class="option" onclick="pilihMusik('lagu3.mp3')">Lagu 3</button>
+    </div>
+
+    <div class="card hidden" id="kuis">
+        <div class="question" id="question">Soal akan muncul di sini</div>
+        <div id="options"></div>
+    </div>
+
+    <div class="card hidden" id="hasil">
+        <h2>Skor Akhir</h2>
+        <div id="skorAkhir"></div>
+        <br>
+        <button class="option" onclick="lanjutConfess()">Lanjut ke Confess</button>
+    </div>
+
+    <div class="card hidden" id="confess">
+        <div class="confess-text hidden" id="line1"></div>
+        <div class="confess-text hidden" id="line2">Haii, makasih udah klik link ini</div>
+        <div class="confess-text hidden" id="line3">Sebenernya aku udah lama suka kamu 😳</div>
+        <div class="confess-text hidden" id="line4">Dan ini caraku ngungkapinnya ❤️</div>
+    </div>
+
+    <audio id="bgm" loop></audio>
+
+    <script>
+        let namaUser = "";
+        let skor = 0;
+        let indeksSoal = 0;
+
+        const soal = [{
+            tanya: "Siapa presiden pertama Indonesia?",
+            pilihan: ["Soekarno", "Habibi", "Hatta", "Jokowi"],
+            benar: 0
+        }, {
+            tanya: "2 + 2 = ?",
+            pilihan: ["3", "4", "5", "2"],
+            benar: 1
+        }];
+
+        function mulaiWarna() {
+            namaUser = document.getElementById("nama").value;
+            if (namaUser === "") return alert("Masukkan nama dulu dong!");
+            document.getElementById("login").classList.add("hidden");
+            document.getElementById("warna").classList.remove("hidden");
+        }
+
+        function pilihWarna(warna) {
+            const bg = {
+                pink: "#ffd1dc",
+                blue: "#add8e6",
+                grey: "#d3d3d3",
+                yellow: "#fff9c4"
+            };
+            document.body.style.backgroundColor = bg[warna] || "#ffe2e2";
+            document.getElementById("warna").classList.add("hidden");
+            document.getElementById("musik").classList.remove("hidden");
+        }
+
+        function pilihMusik(file) {
+            const audio = document.getElementById("bgm");
+            audio.src = file;
+            audio.play();
+            document.getElementById("musik").classList.add("hidden");
+            document.getElementById("kuis").classList.remove("hidden");
+            tampilkanSoal();
+        }
+
+        function tampilkanSoal() {
+            const q = soal[indeksSoal];
+            document.getElementById("question").textContent = q.tanya;
+            const opsiDiv = document.getElementById("options");
+            opsiDiv.innerHTML = "";
+
+            q.pilihan.forEach((opsi, i) => {
+                const tombol = document.createElement("button");
+                tombol.textContent = opsi;
+                tombol.className = "option";
+                tombol.onclick = () => cekJawaban(tombol, i);
+                opsiDiv.appendChild(tombol);
+            });
+        }
+
+        function cekJawaban(tombol, i) {
+            const benar = soal[indeksSoal].benar;
+            const semuaBtn = document.querySelectorAll("#options .option");
+            semuaBtn.forEach(btn => btn.disabled = true);
+
+            if (i === benar) {
+                skor++;
+                tombol.classList.add("correct");
+            } else {
+                tombol.classList.add("wrong");
+                semuaBtn[benar].classList.add("correct");
+            }
+
+            setTimeout(() => {
+                indeksSoal++;
+                if (indeksSoal < soal.length) {
+                    tampilkanSoal();
+                } else {
+                    document.getElementById("kuis").classList.add("hidden");
+                    document.getElementById("hasil").classList.remove("hidden");
+                    document.getElementById("skorAkhir").textContent = `${namaUser}, kamu benar ${skor} dari ${soal.length} soal.`;
+                }
+            }, 1000);
+        }
+
+        function lanjutConfess() {
+            document.getElementById("hasil").classList.add("hidden");
+            document.getElementById("confess").classList.remove("hidden");
+
+            setTimeout(() => {
+                document.getElementById("line1").textContent = namaUser + ", aku mau ngomong sesuatu...";
+                document.getElementById("line1").classList.remove("hidden");
+            }, 500);
+            setTimeout(() => document.getElementById("line2").classList.remove("hidden"), 2500);
+            setTimeout(() => document.getElementById("line3").classList.remove("hidden"), 4500);
+            setTimeout(() => document.getElementById("line4").classList.remove("hidden"), 6500);
+        }
+    </script>
+</body>
+
+</html>
