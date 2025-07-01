@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kuis Confess Full Alur</title>
+    <title>Quiziz dana pelajar</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         * {
@@ -109,9 +109,9 @@
 
     <div class="card hidden" id="musik">
         <h2>Pilih musik latar</h2>
-        <h5>sorry audione jelek😭</h5>
-        <button class="option" onclick="pilihMusik('https://docs.google.com/uc?export=download&id=1_kyTzeNDczwFGCHky355DSgXg0jEA9zM')">To The Bone</button>
-        <button class="option" onclick="pilihMusik('lagu2.mp3')">Terlalu Lama</button>
+        <h5>sorry audione ga iso dipause</h5>
+        <button class="option" onclick="pilihMusik('https://manul29.github.io/test/To The Bone - Pamungkas (Lirik Lagu & Terjemahan).mp3')">To The Bone</button>
+        <button class="option" onclick="pilihMusik('https://manul29.github.io/test/Vierra - Terlalu Lama (Official Music Video).mp3')">Terlalu Lama</button>
         <button class="option" onclick="pilihMusik('lagu3.mp3')">Lagu 3</button>
     </div>
 
@@ -128,10 +128,10 @@
     </div>
 
     <div class="card hidden" id="confess">
-        <div class="confess-text hidden" id="line1"></div>
+        <div class="confess-text hidden" id="line1">Novita Rahma Ardiana</div>
         <div class="confess-text hidden" id="line2">Haii, makasih udah klik link ini</div>
-        <div class="confess-text hidden" id="line3">Sebenernya aku udah lama suka kamu 😳</div>
-        <div class="confess-text hidden" id="line4">Dan ini caraku ngungkapinnya ❤️</div>
+        <div class="confess-text hidden" id="line3">Aku mau jujur sama kamu kalo aku udah lama suka kamu, aku cuma mau jujur dan aku ga berharap amu suka balik jadi yahh itu saja 😳</div>
+        <div class="confess-text hidden" id="line4">Sorry gimmick e agak cringe hehe, have a nice day❤️</div>
     </div>
 
     <audio id="bgm" loop></audio>
@@ -149,7 +149,7 @@
             tanya: "2 + 2 = ?",
             pilihan: ["3", "4", "5", "2"],
             benar: 1
-        }];
+        }, ];
 
         function mulaiWarna() {
             namaUser = document.getElementById("nama").value;
@@ -173,7 +173,9 @@
         function pilihMusik(file) {
             const audio = document.getElementById("bgm");
             audio.src = file;
-            audio.play();
+            audio.play().catch(err => {
+                console.log("Autoplay di cegah, iser harus interaksi dulu")
+            })
             document.getElementById("musik").classList.add("hidden");
             document.getElementById("kuis").classList.remove("hidden");
             tampilkanSoal();
@@ -223,10 +225,7 @@
             document.getElementById("hasil").classList.add("hidden");
             document.getElementById("confess").classList.remove("hidden");
 
-            setTimeout(() => {
-                document.getElementById("line1").textContent = namaUser + ", aku mau ngomong sesuatu...";
-                document.getElementById("line1").classList.remove("hidden");
-            }, 500);
+            setTimeout(() => document.getElementById("line1").classList.remove("hidden"), 500);
             setTimeout(() => document.getElementById("line2").classList.remove("hidden"), 2500);
             setTimeout(() => document.getElementById("line3").classList.remove("hidden"), 4500);
             setTimeout(() => document.getElementById("line4").classList.remove("hidden"), 6500);
